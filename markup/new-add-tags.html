@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css" />
+    <title>DYEorDIE</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 class="header__logo logo">DYEorDIE</h1>
+    </header>
+    
+    <main class="main">
+        <section class="control-buttons">
+            <div class="control-buttons__button">Save</div>
+            <div class="control-buttons__button">Cancel</div>
+        </section>
+        <form class="work-form" action="" method="post">
+            <h2>New work</h2>
+            <label class="work-form__label" for="client-name">
+                <span class="work-form__text">Client name</span>
+                <input type="text" id="client-name">
+            </label>
+            
+            <h2>Time</h2>
+            <label class="work-form__label" for="work-date">
+                <span class="work-form__text">Date</span>
+                <input type="date" name="work-date" id="work-date">
+            </label>
+            <label class="work-form__label" for="start-time">
+                <span class="work-form__text">Start time</span>
+                <input type="time" name="start-time" id="start-time">
+            </label>
+            <label class="work-form__label" for="end-time">
+                <span class="work-form__text">End time</span>
+                <input type="time" name="end-time" id="end-time">
+            </label>
+            
+            <h2>Base preparation</h2>
+            <section class="control-buttons">
+                <div class="control-buttons__button control-buttons__button--add">Add</div>
+                <div class="control-buttons__button control-buttons__button--edit">Edit</div>
+                <div class="control-buttons__button control-buttons__button--remove">Remove</div>
+            </section>
+            <section class="materials-table">
+                <fieldset class="materials-table__column materials-table__column--checker visually-hidden">
+                    <div class="materials-table__header">#</div>
+                    <div class="materials-table__item">
+                        <label for="material1">
+                            <input type="radio" name="material" id="material1">
+                        </label>
+                    </div>
+                    <div class="materials-table__item materials-table__item--checked">
+                        <label for="material2">
+                            <input type="radio" name="material" id="material2" checked>
+                        </label>
+                    </div>
+                    <div class="materials-table__item">
+                        <label for="material3">
+                            <input type="radio" name="material" id="material3">
+                        </label>
+                    </div>
+                </fieldset>
+                <ul class="materials-table__column materials-table__column--name">
+                    <li class="materials-table__header">Name</li>
+                    <li class="materials-table__item">Порошок эстель</li>
+                    <li class="materials-table__item">Перчатки</li>
+                    <li class="materials-table__item">Оксид 3%</li>
+                </ul>
+                <ul class="materials-table__column materials-table__column--amount">
+                    <li class="materials-table__header">Amount</li>
+                    <li class="materials-table__item">60 гр.</li>
+                    <li class="materials-table__item">2 шт.</li>
+                    <li class="materials-table__item">120 мл.</li>
+                </ul>
+            </section>
+            
+            <h2>Dying</h2>
+            <section class="control-buttons">
+                <div class="control-buttons__button control-buttons__button--add">Add</div>
+                <div class="control-buttons__button control-buttons__button--edit">Edit</div>
+                <div class="control-buttons__button control-buttons__button--remove">Remove</div>
+            </section>
+            <section class="materials-table">
+                <fieldset class="materials-table__column materials-table__column--checker visually-hidden">
+                    <div class="materials-table__header">#</div>
+                    <div class="materials-table__item">
+                        <label for="material1">
+                            <input type="radio" name="material" id="material1">
+                        </label>
+                    </div>
+                    <div class="materials-table__item materials-table__item--checked">
+                        <label for="material2">
+                            <input type="radio" name="material" id="material2" checked>
+                        </label>
+                    </div>
+                    <div class="materials-table__item">
+                        <label for="material3">
+                            <input type="radio" name="material" id="material3">
+                        </label>
+                    </div>
+                </fieldset>
+                <ul class="materials-table__column materials-table__column--name">
+                    <li class="materials-table__header">Name</li>
+                    <li class="materials-table__item">Тоника bloody mary</li>
+                    <li class="materials-table__item">Kapous silver</li>
+                    <li class="materials-table__item">Оксид 3%</li>
+                </ul>
+                <ul class="materials-table__column materials-table__column--amount">
+                    <li class="materials-table__header">Amount</li>
+                    <li class="materials-table__item">60 гр.</li>
+                    <li class="materials-table__item">2 шт.</li>
+                    <li class="materials-table__item">120 мл.</li>
+                </ul>
+            </section>
+            
+            <h2>Additional info</h2>
+            <label class="work-form__label" for="photos">
+                <span class="work-form__text">Photos</span>
+                <div class="photos__upload-button"></div>
+                <input 
+                    class="visually-hidden" 
+                    type="file" 
+                    name="photos" 
+                    id="photos" 
+                    multiple
+                    accept="image/jpeg">
+            </label>
+            <section class="photo__box">
+                <section class="photo__container">
+                    <img src="" alt="" width="100" height="100">
+                    <div class="photo__delete-button"></div>
+                </section>
+                <section class="photo__container">
+                    <img src="" alt="" width="100" height="100">
+                    <div class="photo__delete-button"></div>
+                </section>
+                <section class="photo__container">
+                    <img src="" alt="" width="100" height="100">
+                    <div class="photo__delete-button"></div>
+                </section>
+            </section>
+            <label class="work-form__label" for="work-tags">
+                <span class="work-form__text">Tags</span>
+                <input class="work-form__tags" type="text" disabled>
+                <section class="work-form__tags-add-buttons">
+                    <div class="work-form__tags-button">Tags cloud</div>
+                </section>                
+            </label>
+            <label class="work-form__label" for="commentary">
+                <span class="work-form__text">Commentary</span>
+                <textarea name="commentary" id="commentary" rows="5"></textarea>
+            </label>
+        </form>
+        <section class="control-buttons">
+            <div class="control-buttons__button">Save</div>
+            <div class="control-buttons__button">Cancel</div>
+        </section>
+
+
+        <section class="popup">
+            <section class="popup__disabler"></section>
+            <section class="popup__box">
+                <section class="tags-cloud">
+                    <div class="tags-cloud__tag">глитч</div>
+                    <div class="tags-cloud__tag">однотон</div>
+                    <div class="tags-cloud__tag">сплит</div>
+                    <div class="tags-cloud__tag">красный</div>
+                    <div class="tags-cloud__tag">синий</div>
+                    <div class="tags-cloud__tag">оранжевый</div>
+                    <div class="tags-cloud__tag">зелёный</div>
+                    <div class="tags-cloud__tag">блочное</div>
+                    <div class="tags-cloud__tag">закат</div>
+                    <div class="tags-cloud__tag">фиолетовый</div>
+                    <div class="tags-cloud__tag">пастель</div>
+                    <div class="tags-cloud__tag">странное</div>
+                </section>
+                <span class="popup__text">или добавьте новый</span>
+                <label class="popup__label" for="tag">
+                    <input class="popup__input" type="text" id="tag">
+                </label>
+                <section class="control-buttons">
+                    <div class="control-buttons__button">Save</div>
+                    <div class="control-buttons__button">Cancel</div>
+                </section>
+            </section>
+        </section>
+    </main>
+    
+    
+    <footer class="footer">
+        <section class="footer__logo logo logo--smaller">DYEorDIE</section>
+    </footer>
+
+</body>
+</html>

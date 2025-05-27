@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css" />
+    <title>DYEorDIE</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 class="header__logo logo">DYEorDIE</h1>
+        <nav class="main-navigation">
+            <a href="#new" class="main-navigation__item">New</a>
+            <a href="#materials" class="main-navigation__item main-navigation__item--active">Materials</a>
+            <a href="#portfolio" class="main-navigation__item">Portfolio</a>
+        </nav>
+    </header>
+    
+    <main class="main">
+        <section class="control-buttons">
+            <div class="control-buttons__button">Save</div>
+            <div class="control-buttons__button">Cancel</div>
+        </section>
+        <form class="materials-form" action="" method="post">
+            <label for="material-name">
+                <span class="materials-form__label">Name</span>
+                <input type="text" id="material-name">
+            </label>
+            <label for="material-cost">
+                <span class="materials-form__label">Cost</span>
+                <input type="number" name="material-cost" id="material-cost">
+            </label>
+            <label for="material-amount">
+                <span class="materials-form__label">Amount</span>
+                <input type="number" name="material-amount" id="material-amount">
+            </label>
+            <label for="material-units">
+                <span class="materials-form__label">Units</span>
+                <select name="material-units" id="material-units">
+                    <option value="grams">гр</option>
+                    <option value="milliliters">мл</option>
+                    <option value="pieces">шт.</option>
+                </select>
+            </label>
+            <label for="material-cpu">
+                <span class="materials-form__label">Cost per unit (autocalc)</span>
+                <input type="number" name="material-cpu" id="material-cpu" disabled>
+            </label>
+        </form>
+        <section class="control-buttons">
+            <div class="control-buttons__button">Save</div>
+            <div class="control-buttons__button">Cancel</div>
+        </section>
+    </main>
+    
+    
+    <footer class="footer">
+        <section class="footer__logo logo logo--smaller">DYEorDIE</section>
+    </footer>
+
+</body>
+</html>

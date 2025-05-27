@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css" />
+    <title>DYEorDIE</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 class="header__logo logo">DYEorDIE</h1>
+        <nav class="main-navigation">
+            <a href="#new" class="main-navigation__item">New</a>
+            <a href="#materials" class="main-navigation__item main-navigation__item--active">Materials</a>
+            <a href="#portfolio" class="main-navigation__item">Portfolio</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="control-buttons">
+            <div class="control-buttons__button">Add</div>
+            <div class="control-buttons__button control-buttons__button--active">Edit</div>
+            <div class="control-buttons__button">Remove</div>
+        </section>
+        <section class="materials-table">
+            <fieldset class="materials-table__column materials-table__column--checker">
+                <div class="materials-table__header">#</div>
+                <div class="materials-table__item">
+                    <label for="material1">
+                        <input type="radio" name="material" id="material1">
+                    </label>
+                </div>
+                <div class="materials-table__item materials-table__item--checked">
+                    <label for="material2">
+                        <input type="radio" name="material" id="material2" checked>
+                    </label>
+                </div>
+                <div class="materials-table__item">
+                    <label for="material3">
+                        <input type="radio" name="material" id="material3">
+                    </label>
+                </div>
+            </fieldset>
+            <ul class="materials-table__column materials-table__column--name">
+                <li class="materials-table__header"><a href="#" class="sort__button sort__button--active">Name</a></li>
+                <li class="materials-table__item">Порошок эстель</li>
+                <li class="materials-table__item">Перчатки</li>
+                <li class="materials-table__item">Оксид 3%</li>
+            </ul>
+            <ul class="materials-table__column materials-table__column--cost">
+                <li class="materials-table__header"><a href="#" class="sort__button">Cost</a></li>
+                <li class="materials-table__item">650</li>
+                <li class="materials-table__item">340</li>
+                <li class="materials-table__item">1300</li>
+            </ul>
+            <ul class="materials-table__column materials-table__column--amount">
+                <li class="materials-table__header"><a href="#" class="sort__button">Amount</a></li>
+                <li class="materials-table__item">500</li>
+                <li class="materials-table__item">100</li>
+                <li class="materials-table__item">1000</li>
+            </ul>
+            <ul class="materials-table__column materials-table__column--units">
+                <li class="materials-table__header"><a href="#" class="sort__button">Units</a></li>
+                <li class="materials-table__item">гр.</li>
+                <li class="materials-table__item">шт.</li>
+                <li class="materials-table__item">мл.</li>
+            </ul>
+            <ul class="materials-table__column materials-table__column--cpu">
+                <li class="materials-table__header"><a href="#" class="sort__button">CPU</a></li>
+                <li class="materials-table__item">1,3</li>
+                <li class="materials-table__item">3,4</li>
+                <li class="materials-table__item">1,3</li>
+            </ul>
+        </section>
+    </main>
+
+
+    <footer class="footer">
+        <section class="footer__logo logo logo--smaller">DYEorDIE</section>
+    </footer>
+
+</body>
+
+</html>
