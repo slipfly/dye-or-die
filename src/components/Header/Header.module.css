@@ -1,0 +1,12 @@
+.header {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    justify-content: center;
+}
+
+.header__logo {
+    flex-grow: 0;
+    flex-shrink: 0; }
