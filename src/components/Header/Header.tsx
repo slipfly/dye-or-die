@@ -1,9 +1,12 @@
 import React from 'react';
+import * as styles from './Header.module.css';
 
 const Header: React.FC = () => {
+    console.log(styles);
+    console.log('Raw import:', require('./Header.module.css'));
     return (
-        <header className="header">
-            <h1 className="header__logo logo">DYEorDIE</h1>
+        <header className={styles.header}>
+            <h1 className={`${styles.header__logo} logo`}>DYEorDIE</h1>
         </header>
     );
 };
