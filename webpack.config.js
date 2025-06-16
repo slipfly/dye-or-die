@@ -16,15 +16,32 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.module\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                exportOnlyLocals: false,
+                                exportGlobals: true,
+                                exportType: 'default' // <-- 👈 THIS is the key
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/, // SECOND: regular CSS (exclude .module.css explicitly!)
+                exclude: /\.module\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
                 test: /\.(ts|tsx|js|jsx)$/,
                 exclude: /node_modules/,
                 use: 'babel-loader',
             },
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
-        ],
+        ]
     },      
     plugins: [
         new HtmlWebpackPlugin({
