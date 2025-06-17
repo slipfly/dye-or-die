@@ -1,0 +1,23 @@
+
+
+.control-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+.control-buttons__button {
+    text-align: center;
+    font-weight: 700;
+    padding: 10px;
+    border: 2px dashed #636363;
+}
+
+.control-buttons__button--active {
+    background-color: #FFF;
+    border: 2px dashed #000000;
+    color: #000000; 
+}
