@@ -3,11 +3,12 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding-bottom: 30px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 
 .header__logo {
     flex-grow: 0;
     flex-shrink: 0; 
+    color: #fff;
 }

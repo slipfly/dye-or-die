@@ -1,12 +1,16 @@
 import React from 'react';
 import * as styles from './Header.module.css';
+import { Link } from 'react-router-dom';
+import { myRoutes } from '../../const/const';
 
 const Header: React.FC = () => {
-    console.log(styles);
-    console.log('Raw import:', require('./Header.module.css'));
     return (
         <header className={styles.header}>
-            <h1 className={`${styles.header__logo} logo`}>DYEorDIE</h1>
+            <Link 
+                to={myRoutes.default} 
+                className={`${styles.header__logo} logo`}>
+                    DYEorDIE
+            </Link>
         </header>
     );
 };

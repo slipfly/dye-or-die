@@ -4,3 +4,9 @@
     height: 100px;
     justify-content: center; 
 }
+
+.footer__logo {
+    flex-grow: 0;
+    flex-shrink: 0;
+    color: #fff;
+}
