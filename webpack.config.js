@@ -9,6 +9,7 @@ module.exports = {
     },
     mode: 'development',
     devServer: {
+        historyApiFallback: true,
         static: './dist',
         hot: true,
         open: true,
@@ -23,9 +24,9 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                exportOnlyLocals: false,
                                 exportGlobals: true,
-                                exportType: 'default' // <-- 👈 THIS is the key
+                                // NO exportType here!
+                                localIdentName: '[name]__[local]___[hash:base64:5]',
                             },
                         },
                     },
