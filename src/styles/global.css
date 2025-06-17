@@ -44,7 +44,7 @@ html {
   font-size: var(--font-size);
   font-family: var(--font);
   justify-content: center;
-  min-width: 1240px;
+  /* min-width: 1240px; */
   position: relative;
   min-height: 100%;
   -webkit-font-smoothing: antialiased
@@ -76,8 +76,8 @@ h3 {
 
 body {
   box-sizing: border-box;
-  max-width: 1240px;
-  padding: var(--vertical-gap) var(--horizontal-gap) 0;
+  /* max-width: 1240px; */
+  /* padding: var(--vertical-gap) var(--horizontal-gap) 0; */
   width: 100%;
 }
 
