@@ -1,0 +1,16 @@
+.materials-table {
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+tbody tr:nth-child(2n-1) {
+    background-color: #636363;
+}
