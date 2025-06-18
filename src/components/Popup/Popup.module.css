@@ -23,36 +23,3 @@
     text-align: center;
     border: 2px dashed var(--text-color-active);
 }
-
-.popup__box--photo {
-    padding: 0 0 10px;
-    width: 316px;
-}
-
-.popup__text {
-    display: block;
-    margin-bottom: 20px;
-}
-
-.popup__photo {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.popup__label-text {
-    display: block;
-}
-
-.popup__label-text {
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.popup__input {
-    display: block;
-    margin-bottom: 20px;
-    background-color: #636363;
-    box-shadow: none;
-    border: 2px solid #636363;
-    color: #ffffff;
-}
