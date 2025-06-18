@@ -20,6 +20,8 @@
   "homepage": "https://github.com/slipfly/dye-or-die#readme",
   "description": "",
   "dependencies": {
+    "firebase": "^11.9.1",
+    "pristinejs": "^1.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2"
