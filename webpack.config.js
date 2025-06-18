@@ -48,6 +48,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
+        new webpack.DefinePlugin({
+            'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+        // add more vars as needed
+        }),
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
