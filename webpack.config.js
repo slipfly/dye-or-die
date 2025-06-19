@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: './src/index.tsx',
@@ -48,12 +50,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
-        new webpack.DefinePlugin({
-            'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
-        // add more vars as needed
-        }),
+        new Dotenv({
+            path: './.env'
+        })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    },
+    }
 };

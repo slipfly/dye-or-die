@@ -112,3 +112,12 @@ button {
   font-size: var(--font-size);
   letter-spacing: normal;
 }
+
+.pristine-error {
+  color: #ffe800;
+  font-size: 12px;
+}
+
+.has-error input {
+  border: 1px solid #ffe800 !important;
+}
