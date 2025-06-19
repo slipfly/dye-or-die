@@ -14,34 +14,3 @@ td:first-child {
 tbody tr:nth-child(2n-1) {
     background-color: #636363;
 }
-
-.materials-form {
-    margin: 15px auto;
-    width: 100%;
-}
-
-.materials-form__label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.materials-form input {
-    display: block;
-    margin: 0 auto 15px;
-    background-color: #636363;
-    box-shadow: none;
-    border: none;
-    width: 170px;
-}
-
-.material-form__cpu {
-    margin: 0 auto 15px;
-}
-
-.materials-form input,
-.material-form__cpu {
-    height: 20px;
-    color: #ffffff;
-    padding: 5px 10px;
-    font-size: 16px;
-}

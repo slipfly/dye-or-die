@@ -4,51 +4,11 @@ import ControlButtons from '../ControlButtons/ControlButtons';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import { Material } from '../../types/types';
 import Popup from '../Popup/Popup';
-import { hideElement, showElement } from '../../utils/utils';
-import Pristine from 'pristinejs';
-
-const CONTROL_BUTTONS = {
-    MaterialsPage: ['Add', 'Edit', 'Remove'],
-    AddMaterials: ['Save', 'Cancel']
-};
-
-const renderAddMaterialsPopup = (popupRef: React.RefObject<HTMLDivElement | null>) => {
-    
-
-    return (
-        <>
-            <form className={styles["materials-form"]} action="" method="post">
-                <label>
-                    <span className={styles["materials-form__label"]}>Name</span>
-                    <input type="text" id="material-name" required/>
-                </label>
-                <label>
-                    <span className={styles["materials-form__label"]}>Cost</span>
-                    <input type="number" name="material-cost" id="material-cost" required/>
-                </label>
-                <label>
-                    <span className={styles["materials-form__label"]}>Amount</span>
-                    <input type="number" name="material-amount" id="material-amount" required/>
-                </label>
-                <div>
-                    <span className={styles["materials-form__label"]}>Cost per unit</span>
-                    <div className={styles["material-form__cpu"]}>22</div>
-                </div>
-            </form>
-        
-            <ControlButtons
-                buttonNames={CONTROL_BUTTONS.AddMaterials}
-                onClickMap={{
-                    Cancel: () => {
-                        hideElement(popupRef.current!);
-                    }
-                }} />
-        </>
-    );
-};
-
+import { showElement } from '../../utils/utils';
+import { CONTROL_BUTTONS } from '../../const/const';
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import AddMaterialsPopup from '../PopupContent/AddMaterialPopup/AddMaterialPopup';
 
 const addMaterial = async (material: object) => {
     try {
@@ -59,21 +19,20 @@ const addMaterial = async (material: object) => {
     }
 };
 
-
 interface MaterialsPageProps {
     data: Material[];
 };
 
 const MaterialsPage: React.FC<MaterialsPageProps> = ({data}) => {
     const popupRef = useRef<HTMLDivElement>(null);
-    const popupAddMaterials = renderAddMaterialsPopup(popupRef);
+    const popupContent = <AddMaterialsPopup popupRef={popupRef} />;
 
     return (
         <main className="main">
             <MainNavigation />
 
             <ControlButtons 
-                buttonNames={CONTROL_BUTTONS.MaterialsPage} 
+                btnParams={CONTROL_BUTTONS.MaterialsPage} 
                 onClickMap={{
                     Add: () => {
                         console.log('add');
@@ -105,7 +64,7 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({data}) => {
                 </tbody>
             </table>
 
-            <Popup ref={popupRef}  children={popupAddMaterials}/>
+            <Popup ref={popupRef}  children={popupContent}/>
         </main>
     );
 };

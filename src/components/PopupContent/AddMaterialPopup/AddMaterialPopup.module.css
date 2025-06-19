@@ -1,0 +1,36 @@
+.materials-form {
+    margin: 15px auto;
+    width: 100%;
+}
+
+.materials-form__label {
+    display: block;
+    margin: 15px 0;
+}
+
+.materials-form__label span {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.materials-form input {
+    display: block;
+    margin: 0 auto;
+    background-color: #636363;
+    box-shadow: none;
+    border: none;
+    width: 170px;
+}
+
+.material-cpu {
+    margin: 0 auto 15px;
+}
+
+.materials-form input,
+.material-cpu {
+    height: 20px;
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 16px;
+}
