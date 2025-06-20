@@ -9,7 +9,7 @@ interface  ButtonParameters {
 interface ControlButtonsProps {
     btnParams: readonly ButtonParameters[];
     onClickMap?: {
-        [key: string]: () => void;
+        [key: string]: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     };
 }
 

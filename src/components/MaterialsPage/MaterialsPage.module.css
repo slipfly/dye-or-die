@@ -14,3 +14,7 @@ td:first-child {
 tbody tr:nth-child(2n-1) {
     background-color: #636363;
 }
+
+.delete-mode {
+    outline: 1px solid #ffe800;
+}

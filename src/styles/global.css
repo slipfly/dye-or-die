@@ -121,3 +121,9 @@ button {
 .has-error input {
   border: 1px solid #ffe800 !important;
 }
+
+.active {
+  background-color: #ffe800 !important;
+  color: #000 !important;
+  border-color: #000 !important;
+}

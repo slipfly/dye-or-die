@@ -1,5 +1,5 @@
 .materials-form {
-    margin: 15px auto;
+    margin: 0 auto;
     width: 100%;
 }
 
@@ -23,12 +23,7 @@
     width: 170px;
 }
 
-.material-cpu {
-    margin: 0 auto 15px;
-}
-
-.materials-form input,
-.material-cpu {
+.materials-form input {
     height: 20px;
     color: #ffffff;
     padding: 5px 10px;

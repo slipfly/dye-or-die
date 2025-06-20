@@ -8,10 +8,11 @@ import { db } from "../../../utils/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 interface AddMaterialsPopupProps {
-    popupRef: React.RefObject<HTMLDivElement | null>;
+    popupRef: React.RefObject<HTMLDivElement | null>;    
+    onSubmitSuccess: () => void;
 }
 
-const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef }) => {
+const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef, onSubmitSuccess }) => {
     const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
@@ -49,7 +50,7 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef }) => {
             const name = materialNameInput?.value ?? "";
             const cost = parseFloat(materialCostInput?.value ?? "0");
             const amount = parseFloat(materialAmountInput?.value ?? "0");
-            const cpu = amount !== 0 && cost !== 0 ? cost / amount : 0;
+            const cpu = amount !== 0 && cost !== 0 ? parseFloat((cost / amount).toFixed(2)) : 0;
             
 
             try {
@@ -61,6 +62,9 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef }) => {
                 });
 
                 console.log("Document written with ID: ", docRef.id);
+
+                onSubmitSuccess();
+                form.reset();
                 hideElement(popupRef.current!);
             } catch (err) {
                 console.error("Error adding document: ", err);
@@ -94,10 +98,6 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef }) => {
                 <span>Amount</span>
                 <input type="number" name="material-amount" id="material-amount" required />
             </label>
-            <div>
-                <span className={styles["materials-form__label"]}>Cost per unit</span>
-                <div className={styles["material-cpu"]}></div>
-            </div>
 
             <ControlButtons
                 btnParams={CONTROL_BUTTONS.AddMaterials}
