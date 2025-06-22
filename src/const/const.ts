@@ -37,3 +37,14 @@ export const CONTROL_BUTTONS = {
         }
     ]
 } as const;
+
+export const Database = {
+    materials: 'materials'
+} as const;
+
+export const Mode = {
+    default: 'default',
+    edit: 'edit',
+    remove: 'remove',
+    add: 'add'
+} as const;

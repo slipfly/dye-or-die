@@ -1,23 +1,55 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState, FormEvent } from "react";
 import Pristine from 'pristinejs';
 import * as styles from './AddMaterialPopup.module.css'
 import ControlButtons from "../../ControlButtons/ControlButtons";
-import { CONTROL_BUTTONS } from "../../../const/const";
+import { CONTROL_BUTTONS, Database, Mode } from "../../../const/const";
 import { hideElement } from "../../../utils/utils";
 import { db } from "../../../utils/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { Material } from "../../../types/types";
 
 interface AddMaterialsPopupProps {
     popupRef: React.RefObject<HTMLDivElement | null>;    
     onSubmitSuccess: () => void;
+    content?: Material | null;
+    currentMode?: string | null;
 }
 
-const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef, onSubmitSuccess }) => {
-    const formRef = useRef<HTMLFormElement>(null);
+const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ 
+    popupRef, 
+    onSubmitSuccess, 
+    content,
+    currentMode
+}) => {
 
-    useEffect(() => {
+    console.log("Content: ", content);
+    
+
+    const formRef = useRef<HTMLFormElement>(null);
+    const [formData, setFormData] = useState({
+        name: content?.name ?? "",
+        cost: content?.cost?.toString() ?? "",
+        amount: content?.amount?.toString() ?? ""
+    });
+    
+
+    const updateMaterialInFirebase = async (id: string, update: Partial<Material>) => {
+        const docRef = doc(db, Database.materials, id);
+
+        try {
+            await updateDoc(docRef, update);
+            console.log(`Material "${id}" updated successfully.`);
+        } catch (err) {
+            console.error("Error updating material:", err);
+        }
+    };
+    
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
         const form = formRef.current;
         if (!form) return;
+
 
         const pristine = new Pristine(form, {
             classTo: styles["materials-form__label"],
@@ -28,38 +60,30 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef, onSubmi
             errorTextClass: 'form-error',
         });
 
-        const materialNameInput = form.querySelector<HTMLInputElement>('input[name="material-name"]');
-        const materialCostInput = form.querySelector<HTMLInputElement>('input[name="material-cost"]');
-        const materialAmountInput = form.querySelector<HTMLInputElement>('input[name="material-amount"]');
-        
-        if (materialNameInput) {
-            pristine.addValidator(
-                materialNameInput,
-                (value: string) => value.trim().length > 0,
-                'Material name can’t be empty!'
-            );
+        if (!pristine.validate()) {
+            return;
         }
 
-        const handleSubmit = async (e: Event) => {
-            e.preventDefault();
+        console.log("73 formData: ", formData);
 
-            if (!pristine.validate()) {
-                return;
-            }
+        const newData = {
+            name: formData.name.trim(),
+            cost: parseFloat(formData.cost),
+            amount: parseFloat(formData.amount),
+            cpu: (() => {
+                const cost = parseFloat(formData.cost);
+                const amount = parseFloat(formData.amount);
+                return amount !== 0 && cost !== 0 ? parseFloat((cost / amount).toFixed(2)) : 0;
+            })()
+        };
 
-            const name = materialNameInput?.value ?? "";
-            const cost = parseFloat(materialCostInput?.value ?? "0");
-            const amount = parseFloat(materialAmountInput?.value ?? "0");
-            const cpu = amount !== 0 && cost !== 0 ? parseFloat((cost / amount).toFixed(2)) : 0;
-            
+        if (content) {
+            console.log("88 newData: ", newData);
 
+            updateMaterialInFirebase(content?.id!, newData);
+        } else {
             try {
-                const docRef = await addDoc(collection(db, "materials"), {
-                    name,
-                    cost,
-                    amount,
-                    cpu
-                });
+                const docRef = await addDoc(collection(db, "materials"), newData);
 
                 console.log("Document written with ID: ", docRef.id);
 
@@ -68,35 +92,53 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ popupRef, onSubmi
                 hideElement(popupRef.current!);
             } catch (err) {
                 console.error("Error adding document: ", err);
-                
             }
-        };
+        }
 
-        form.addEventListener('submit', handleSubmit);
+        if (currentMode === Mode.edit) {
 
-        // Optional: cleanup
-        return () => {
-            form.removeEventListener('submit', handleSubmit);
-        };
-    }, []);
+        }
+
+    };
 
     return (
         <form 
                 ref={formRef} 
                 className={styles["materials-form"]} 
                 action="" 
-                method="post">
+                method="post"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit(e);
+                }}>
             <label className={styles["materials-form__label"]}>
                 <span>Name</span>
-                <input type="text" name="material-name" required />
+                <input 
+                    type="text" 
+                    name="material-name" 
+                    value={formData.name} 
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required />
             </label>
             <label className={styles["materials-form__label"]}>
                 <span>Cost</span>
-                <input type="number" name="material-cost" id="material-cost" required />
+                <input 
+                    type="number" 
+                    name="material-cost" 
+                    id="material-cost" 
+                    value={formData.cost}
+                    onChange={(e) => setFormData({ ...formData, cost: e.target.value })}
+                    required />
             </label>
             <label className={styles["materials-form__label"]}>
                 <span>Amount</span>
-                <input type="number" name="material-amount" id="material-amount" required />
+                <input 
+                    type="number" 
+                    name="material-amount" 
+                    id="material-amount" 
+                    value={formData.amount}
+                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    required />
             </label>
 
             <ControlButtons

@@ -24,9 +24,6 @@ const getNavBtns = ({isMain, location}: getNavBtnsProps) => {
 const MainNavigation: React.FC = () => {
     const location = useLocation();
     const isMain = location.pathname === '/';
-
-    console.log(location.pathname.slice(1));
-    
     
     return (
         <section className={isMain
