@@ -10,7 +10,7 @@ const Popup = forwardRef<HTMLDivElement, PopupProps>((
     ref) => {   
 
     return (
-        <section ref={ref} className="popup visually-hidden">
+        <section ref={ref} className="popup">
             <section className={styles.popup__disabler}></section>
             <section className={styles.popup__box}>
                 {children}

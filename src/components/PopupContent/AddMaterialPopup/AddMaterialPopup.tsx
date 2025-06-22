@@ -12,18 +12,15 @@ interface AddMaterialsPopupProps {
     popupRef: React.RefObject<HTMLDivElement | null>;    
     onSubmitSuccess: () => void;
     content?: Material | null;
-    currentMode?: string | null;
+    onCancel: () => void
 }
 
 const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ 
     popupRef, 
     onSubmitSuccess, 
     content,
-    currentMode
+    onCancel
 }) => {
-
-    console.log("Content: ", content);
-    
 
     const formRef = useRef<HTMLFormElement>(null);
     const [formData, setFormData] = useState({
@@ -43,13 +40,21 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({
             console.error("Error updating material:", err);
         }
     };
+
+    const addMaterialInFirebase = async (data: Partial<Material>) => {
+        try {
+            const docRef = await addDoc(collection(db, "materials"), data);
+            console.log("Document written with ID: ", docRef.id);
+        } catch (err) {
+            console.error("Error adding document: ", err);
+        }
+    }
     
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         const form = formRef.current;
         if (!form) return;
-
 
         const pristine = new Pristine(form, {
             classTo: styles["materials-form__label"],
@@ -64,8 +69,6 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({
             return;
         }
 
-        console.log("73 formData: ", formData);
-
         const newData = {
             name: formData.name.trim(),
             cost: parseFloat(formData.cost),
@@ -78,27 +81,14 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({
         };
 
         if (content) {
-            console.log("88 newData: ", newData);
-
             updateMaterialInFirebase(content?.id!, newData);
         } else {
-            try {
-                const docRef = await addDoc(collection(db, "materials"), newData);
-
-                console.log("Document written with ID: ", docRef.id);
-
-                onSubmitSuccess();
-                form.reset();
-                hideElement(popupRef.current!);
-            } catch (err) {
-                console.error("Error adding document: ", err);
-            }
+            addMaterialInFirebase(newData)
         }
 
-        if (currentMode === Mode.edit) {
-
-        }
-
+        onSubmitSuccess();
+        form.reset();
+        onCancel();
     };
 
     return (
@@ -144,9 +134,7 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({
             <ControlButtons
                 btnParams={CONTROL_BUTTONS.AddMaterials}
                 onClickMap={{
-                    Cancel: () => {
-                        hideElement(popupRef.current!);
-                    }
+                    Cancel: () => onCancel()
                 }} />
         </form>
     );

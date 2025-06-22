@@ -4,7 +4,7 @@ import ControlButtons from '../ControlButtons/ControlButtons';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import { Material } from '../../types/types';
 import Popup from '../Popup/Popup';
-import { showElement, switchControlBtnState, setEditButtonsBehavior, switchMode } from '../../utils/utils';
+import { switchControlBtnState, setEditButtonsBehavior, switchMode } from '../../utils/utils';
 import { CONTROL_BUTTONS, Database, Mode } from '../../const/const';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
@@ -21,6 +21,15 @@ const MaterialsPage: React.FC = () => {
     const tbodyRef = useRef<HTMLTableSectionElement>(null);
     const removeBtnRef = useRef<HTMLButtonElement>(null);
     const editBtnRef = useRef<HTMLButtonElement>(null);
+    const [popup, setPopup] = useState(false);
+
+    const closePopup = () => {
+        setPopup(false);
+    };
+
+    const openPopup = () => {
+        setPopup(true)
+    }
 
     const fetchMaterials = async () => {
         try {
@@ -56,6 +65,7 @@ const MaterialsPage: React.FC = () => {
         popupRef={popupRef} 
         onSubmitSuccess={fetchMaterials} 
         content={editContent} 
+        onCancel={closePopup}
         />;
 
     useEffect(() => {
@@ -87,7 +97,7 @@ const MaterialsPage: React.FC = () => {
 
                 case Mode.edit:                    
                     setEditContent(material);
-                    showElement(popupRef.current);
+                    openPopup();
                     break;
             
                 default:
@@ -114,7 +124,8 @@ const MaterialsPage: React.FC = () => {
                 btnParams={CONTROL_BUTTONS.MaterialsPage} 
                 onClickMap={{
                     Add: () => {
-                        showElement(popupRef.current);
+                        // showElement(popupRef.current);
+                        openPopup();
                         switchMode(Mode.add, currentMode, setCurrentMode);
                     },
                     Remove: (e) => {
@@ -164,7 +175,8 @@ const MaterialsPage: React.FC = () => {
                 </tbody>
             </table>
 
-            <Popup ref={popupRef} children={popupContent} />
+            {popup ? <Popup ref={popupRef} children={popupContent} /> : ''}
+            
         </main>
     );
 };

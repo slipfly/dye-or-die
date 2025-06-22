@@ -36,7 +36,7 @@ export const setEditButtonsBehavior = (
 export const switchMode = (
     chosenMode: string | undefined, 
     currentMode: string | undefined, 
-    setCurrentMode: (value: string | undefined) => void
+    setCurrentMode: (value: string | undefined) => void,
 ) =>  {
     if (currentMode !== chosenMode) {
         setCurrentMode(chosenMode);
