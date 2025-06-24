@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, FormEvent } from "react";
 import Pristine from 'pristinejs';
-import * as styles from './AddMaterialPopup.module.css'
+import * as styles from './MaterialsPopup.module.css'
 import ControlButtons from "../../ControlButtons/ControlButtons";
 import { CONTROL_BUTTONS, Database, Mode } from "../../../const/const";
 import { hideElement } from "../../../utils/utils";
@@ -8,14 +8,14 @@ import { db } from "../../../utils/firebase";
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { Material } from "../../../types/types";
 
-interface AddMaterialsPopupProps {
+interface MaterialsPopupProps {
     popupRef: React.RefObject<HTMLDivElement | null>;    
     onSubmitSuccess: () => void;
     content?: Material | null;
     onCancel: () => void
 }
 
-const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({ 
+const MaterialsPopup: React.FC<MaterialsPopupProps> = ({ 
     popupRef, 
     onSubmitSuccess, 
     content,
@@ -140,4 +140,4 @@ const AddMaterialsPopup: React.FC<AddMaterialsPopupProps> = ({
     );
 };
 
-export default AddMaterialsPopup;
+export default MaterialsPopup;

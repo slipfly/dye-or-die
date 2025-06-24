@@ -5,10 +5,10 @@ import MainNavigation from '../MainNavigation/MainNavigation';
 import { Material } from '../../types/types';
 import Popup from '../Popup/Popup';
 import { switchControlBtnState, setEditButtonsBehavior, switchMode } from '../../utils/utils';
-import { CONTROL_BUTTONS, Database, Mode } from '../../const/const';
-import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../utils/firebase";
-import AddMaterialsPopup from '../PopupContent/AddMaterialPopup/AddMaterialPopup';
+import { CONTROL_BUTTONS, Mode } from '../../const/const';
+import MaterialsPopup from '../PopupContent/MaterialsPopup/MaterialsPopup';
+import { useMaterialTableClick } from '../../hooks/useMaterialTableClick';
+import { deleteMaterial, fetchAndSetMaterials } from '../../services/materialService';
 
 
 const MaterialsPage: React.FC = () => {
@@ -31,90 +31,43 @@ const MaterialsPage: React.FC = () => {
         setPopup(true)
     }
 
-    const fetchMaterials = async () => {
-        try {
-            const querySnapshot = await getDocs(collection(db, Database.materials));
-            const materialsData: Material[] = querySnapshot.docs.map((doc) => {
-                const data = doc.data();
-                return {
-                    id: doc.id,
-                    name: data.name,
-                    cost: data.cost,
-                    amount: data.amount,
-                    cpu: data.cpu
-                };
-            });
-            setMaterials(materialsData);
-        } catch (err) {
-            console.error("Error fetching materials:", err);
-        }
-    };
-
-    const deleteMaterialFromFirebase = async (id: string) => {
-        try {
-            await deleteDoc(doc(db, Database.materials, id));
-            setMaterials(prev => prev.filter(item => item.id !== id));
-            console.log(`Material with id ${id} deleted.`);
-        } catch (err) {
-            console.error("Deletion failed:", err);
-            alert("Failed to delete material.");
-        }
-    };
-
-    const popupContent = <AddMaterialsPopup 
+    const popupContent = <MaterialsPopup 
         popupRef={popupRef} 
-        onSubmitSuccess={fetchMaterials} 
+        onSubmitSuccess={() => fetchAndSetMaterials(setMaterials)} 
         content={editContent} 
         onCancel={closePopup}
         />;
 
     useEffect(() => {
-        fetchMaterials();
+        fetchAndSetMaterials(setMaterials);
     }, []);
 
-    useEffect(() => {
-        const tbody = tbodyRef.current;
-        if (!tbody) return;
+    const onRemove = async (material: Material) => {
+        if (confirm(`Remove "${material.name}"?`)) {
 
-        const handleTableClick = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            const row = target.closest('tr');
-            if (!row || !row.id) return;
+            await deleteMaterial(material.id);
 
-            const materialId = row.id;
-            const material = materials.find(mat => mat.id === materialId);
-            if (!material) return;
+            setMaterials(prev => prev.filter(item => item.id !== material.id));
+            console.log(`Material with id ${material.id} deleted.`);
             
-            switch (currentMode) {
-                case Mode.remove:
-                    if (confirm(`Delete "${material.name}"?`)) {
-                        deleteMaterialFromFirebase(materialId);
-                        setRemovalMode(false);
-                    }
-                    switchControlBtnState(removeBtnRef.current);
-                    setCurrentMode(Mode.default);
-                    break;
-
-                case Mode.edit:                    
-                    setEditContent(material);
-                    openPopup();
-                    break;
-            
-                default:
-                    break;
-            }
-
-            fetchMaterials();
+            setRemovalMode(false);
         }
-        
-        if (removalMode || editMode) {
-            tbody.addEventListener('click', handleTableClick);
-        }
+        switchControlBtnState(removeBtnRef.current);
+        setCurrentMode(Mode.default);
+    };
 
-        return () => {
-            tbody.removeEventListener('click', handleTableClick);
-        };
-    }, [removalMode, editMode, materials, currentMode]);
+    const onEdit = (material: Material) => {
+        setEditContent(material);
+        openPopup();
+    };
+
+    useMaterialTableClick(
+        tbodyRef,
+        currentMode,
+        materials,
+        onRemove,
+        onEdit
+    );
 
     return (
         <main className="main">
