@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -10,9 +10,7 @@ import Footer from './components/Footer/Footer';
 import MainPage from './components/MainPage/MainPage';
 import MaterialsPage from './components/MaterialsPage/MaterialsPage';
 import { myRoutes } from './const/const';
-import * as Data from './const/mockup'
-
-const materialsData = Data.mockMaterials;
+import NewWorkPage from './components/NewWorkPage/NewWorkPage';
 
 const App: React.FC = () => {
 
@@ -25,7 +23,10 @@ const App: React.FC = () => {
                     element={<MainPage />}/>
                 <Route 
                     path={myRoutes.materials} 
-                    element={<MaterialsPage data={materialsData}/>}/>
+                    element={<MaterialsPage/>}/>
+                <Route
+                    path={myRoutes.new}
+                    element={<NewWorkPage />} />
             </Routes>
             <Footer />
         </Router>
