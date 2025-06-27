@@ -1,16 +1,5 @@
 import { Mode } from "../const/const";
-
-export const showElement = (el: HTMLElement | null) => {
-    if  (el) {
-        el.classList.remove('visually-hidden');
-    }    
-};
-
-export const hideElement = (el: HTMLElement | null) => {
-    if (el) {
-        el.classList.add('visually-hidden');
-    }
-};
+import React from "react";
 
 export const switchControlBtnState = (button: HTMLButtonElement | undefined | null) => {
     if (button?.classList.contains('active')) {
@@ -43,4 +32,17 @@ export const switchMode = (
     } else {
         setCurrentMode(Mode.default);
     }
+};
+
+export const handleModeToggle = (
+    mode: 'edit' | 'remove',
+    currentModeState: boolean,
+    setModeState: React.Dispatch<React.SetStateAction<boolean>>,
+    btn: HTMLButtonElement | undefined | null,
+    btnRef: React.RefObject<HTMLButtonElement | null>,
+    currentMode: string | undefined,
+    setCurrentMode: (value: string | undefined) => void,
+) => {
+    setEditButtonsBehavior(currentModeState, setModeState, btn, btnRef);
+    switchMode(mode === 'edit' ? Mode.edit : Mode.remove, currentMode, setCurrentMode);
 };

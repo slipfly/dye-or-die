@@ -3,7 +3,6 @@ import Pristine from 'pristinejs';
 import * as styles from './MaterialsPopup.module.css'
 import ControlButtons from "../../ControlButtons/ControlButtons";
 import { CONTROL_BUTTONS, Database, Mode } from "../../../const/const";
-import { hideElement } from "../../../utils/utils";
 import { db } from "../../../utils/firebase";
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { Material } from "../../../types/types";

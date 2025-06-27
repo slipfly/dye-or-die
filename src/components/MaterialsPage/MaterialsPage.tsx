@@ -1,64 +1,88 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import * as styles from './MaterialsPage.module.css'
 import ControlButtons from '../ControlButtons/ControlButtons';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import { Material } from '../../types/types';
 import Popup from '../Popup/Popup';
-import { switchControlBtnState, setEditButtonsBehavior, switchMode } from '../../utils/utils';
+import { switchControlBtnState, switchMode, handleModeToggle } from '../../utils/utils';
 import { CONTROL_BUTTONS, Mode } from '../../const/const';
 import MaterialsPopup from '../PopupContent/MaterialsPopup/MaterialsPopup';
 import { useMaterialTableClick } from '../../hooks/useMaterialTableClick';
 import { deleteMaterial, fetchAndSetMaterials } from '../../services/materialService';
+import ConfirmationPopup from '../PopupContent/ConfirmationPopup/ConfirmationPopup';
 
 
 const MaterialsPage: React.FC = () => {
-    const popupRef = useRef<HTMLDivElement>(null);
+    const materialPopupRef = useRef<HTMLDivElement>(null);
+    const [materialPopup, setMaterialPopup] = useState(false);
+    const [materialToRemove, setMaterialToRemove] = useState<Material | null>(null);
+    const confirmationPopupRef = useRef<HTMLDivElement>(null);
+    const [confirmationPopup, setConfirmationPopup] = useState(false);
+
     const [materials, setMaterials] = useState<Material[]>([]);
+
     const [removalMode, setRemovalMode] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [currentMode, setCurrentMode] = useState<string | undefined>(Mode.default);
+
     const [editContent, setEditContent] = useState<Material | null>(null);
+
     const tbodyRef = useRef<HTMLTableSectionElement>(null);
     const removeBtnRef = useRef<HTMLButtonElement>(null);
     const editBtnRef = useRef<HTMLButtonElement>(null);
-    const [popup, setPopup] = useState(false);
 
-    const closePopup = () => {
-        setPopup(false);
-    };
-
-    const openPopup = () => {
-        setPopup(true)
-    }
-
-    const popupContent = <MaterialsPopup 
-        popupRef={popupRef} 
-        onSubmitSuccess={() => fetchAndSetMaterials(setMaterials)} 
-        content={editContent} 
-        onCancel={closePopup}
-        />;
+    const sortedMaterials = useMemo(() =>
+        [...materials].sort((a, b) => a.name.localeCompare(b.name)),
+        [materials]
+    );
 
     useEffect(() => {
         fetchAndSetMaterials(setMaterials);
     }, []);
 
-    const onRemove = async (material: Material) => {
-        if (confirm(`Remove "${material.name}"?`)) {
-
-            await deleteMaterial(material.id);
-
-            setMaterials(prev => prev.filter(item => item.id !== material.id));
-            console.log(`Material with id ${material.id} deleted.`);
-            
-            setRemovalMode(false);
+    const exitEditModeIfActive = () => {
+        if (editMode) {
+            handleModeToggle(
+                Mode.edit,
+                editMode,
+                setEditMode,
+                editBtnRef.current,
+                editBtnRef,
+                currentMode,
+                setCurrentMode
+            );
         }
+    };
+    
+
+    const handleCloseConfirmation = () => {
+        setConfirmationPopup(false);
+        setMaterialToRemove(null);
+    };
+
+    const handleSubmitRemoval = async (id: string) => {
+        try {
+            await deleteMaterial(id);
+            setMaterials(prev => prev.filter(item => item.id !== id));
+            console.log(`Material with id ${id} deleted.`);
+        } catch (err) {
+            console.error("Failed to delete material:", err);
+        } finally {
+            setRemovalMode(false);
+            handleCloseConfirmation();
+        }
+    }
+
+    const onRemove = (material: Material) => {
+        setMaterialToRemove(material);
+        setConfirmationPopup(true);
         switchControlBtnState(removeBtnRef.current);
         setCurrentMode(Mode.default);
     };
 
     const onEdit = (material: Material) => {
         setEditContent(material);
-        openPopup();
+        setMaterialPopup(true);
     };
 
     useMaterialTableClick(
@@ -77,27 +101,33 @@ const MaterialsPage: React.FC = () => {
                 btnParams={CONTROL_BUTTONS.MaterialsPage} 
                 onClickMap={{
                     Add: () => {
-                        // showElement(popupRef.current);
-                        openPopup();
+                        setEditMode(false);
+                        setRemovalMode(false);
+                        setEditContent(null);
+                        setMaterialPopup(true);
                         switchMode(Mode.add, currentMode, setCurrentMode);
                     },
                     Remove: (e) => {
-                        setEditButtonsBehavior(
-                            removalMode,
+                        handleModeToggle(
+                            Mode.remove, 
+                            removalMode, 
                             setRemovalMode,
                             e?.currentTarget,
-                            removeBtnRef
+                            removeBtnRef,
+                            currentMode,
+                            setCurrentMode
                         );
-                        switchMode(Mode.remove, currentMode, setCurrentMode);
                     },
                     Edit: (e) => {
-                        setEditButtonsBehavior(
+                        handleModeToggle(
+                            Mode.edit,
                             editMode,
                             setEditMode,
                             e?.currentTarget,
-                            editBtnRef
+                            editBtnRef,
+                            currentMode,
+                            setCurrentMode
                         );
-                        switchMode(Mode.edit, currentMode, setCurrentMode);
                     }
                 }} />
 
@@ -111,9 +141,7 @@ const MaterialsPage: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody ref={tbodyRef}>
-                    {materials
-                        .slice() // create a shallow copy so we don’t mutate the original
-                        .sort((a, b) => a.name.localeCompare(b.name)) // alphabetically by `name`
+                    {sortedMaterials
                         .map((item) => (
                             <tr 
                                 key={item.id} 
@@ -128,8 +156,35 @@ const MaterialsPage: React.FC = () => {
                 </tbody>
             </table>
 
-            {popup ? <Popup ref={popupRef} children={popupContent} /> : ''}
-            
+            {materialPopup && (
+                <Popup ref={materialPopupRef}>
+                    <MaterialsPopup
+                        popupRef={materialPopupRef}
+                        onSubmitSuccess={() => {
+                            fetchAndSetMaterials(setMaterials);
+                            exitEditModeIfActive();
+                        }}
+                        content={editContent}
+                        onCancel={() => {
+                            setMaterialPopup(false)
+                            exitEditModeIfActive();
+                        }} />
+                </Popup>
+            )}
+            {confirmationPopup && (
+                <Popup ref={confirmationPopupRef}>
+                    <ConfirmationPopup
+                        onSubmitSuccess={() => {
+                            if (materialToRemove) {
+                                handleSubmitRemoval(materialToRemove.id);
+                            }
+                            handleCloseConfirmation();
+                        }}
+                        content={`Remove "${materialToRemove?.name}"?`}
+                        onCancel={handleCloseConfirmation}
+                    />
+                </Popup>
+            )}
         </main>
     );
 };

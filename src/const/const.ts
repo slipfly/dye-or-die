@@ -35,6 +35,16 @@ export const CONTROL_BUTTONS = {
             name: 'Cancel',
             type: 'reset'
         }
+    ],
+    Confirmation: [
+        {
+            name: 'Confirm',
+            type: 'button'
+        },
+        {
+            name: 'Cancel',
+            type: 'button'
+        }
     ]
 } as const;
 
